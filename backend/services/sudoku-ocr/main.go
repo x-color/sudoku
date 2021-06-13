@@ -40,7 +40,7 @@ func toSudoku(img gocv.Mat, format string) ([]cell, error) {
 	return cells, nil
 }
 
-func main() {
+func handler() {
 	img := gocv.IMRead("./images/image.jpg", gocv.IMReadGrayScale)
 	defer img.Close()
 
@@ -58,6 +58,10 @@ func main() {
 	}
 
 	display(cells)
+}
+
+func main() {
+	handler()
 }
 
 func display(cells []cell) {
