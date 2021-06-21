@@ -13,6 +13,7 @@ export type Cell = {
   readonly i: Position;
   value: SudokuNumber;
   candidates: Candidates;
+  difficulty: number;
 };
 export type Candidates = SudokuNumber[];
 

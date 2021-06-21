@@ -1,5 +1,5 @@
 import { Board, SudokuNumber, Cells, Position, Boards } from "./types";
-import { fillCandidates } from "./candidates";
+import { fillCandidates, fillCandidatesOnlyForBox } from "./candidates";
 import { fillOneCell } from "./fillCells";
 import { clone } from "./utils";
 
@@ -8,6 +8,13 @@ export const run = (board: Board): Boards => {
   [...Array(81)].forEach(() => {
     boards = [...boards, ...fillCandidates(clone(boards[boards.length - 1]))];
     boards = [...boards, fillOneCell(clone(boards[boards.length - 1]))];
+
+    if (boards[boards.length - 1].process === null) {
+      boards = [
+        ...boards,
+        ...fillCandidatesOnlyForBox(clone(boards[boards.length - 1])),
+      ];
+    }
   });
 
   return boards;
@@ -19,6 +26,7 @@ const sampleSudoku = (values: SudokuNumber[]): Board => {
       i: i as Position,
       value: v,
       candidates: ["1", "2", "3", "4", "5", "6", "7", "8", "9"],
+      difficulty: 1,
     };
   });
   return { grid, process: null };

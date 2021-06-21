@@ -24,9 +24,13 @@ const fillCandidatesInCellsGroup = (
         board.grid[cell.i].candidates = [];
         return;
       }
+      const before = board.grid[cell.i].candidates.length;
       board.grid[cell.i].candidates = cell.candidates.filter((v) =>
         candidates.includes(v)
       );
+      if (board.grid[cell.i].candidates.length < before) {
+        board.grid[cell.i].difficulty *= 2;
+      }
     });
 
     boards.push({
@@ -61,7 +65,7 @@ const candidatesOnlyForBox = (
 //
 // *1 These null cells must be filled 8 or 9
 //    Therefore, cells without the null cells in the row including the cells must not be filled 8 and 9.
-const fillCandidatesOnlyForBox = (board: Board): Boards => {
+export const fillCandidatesOnlyForBox = (board: Board): Boards => {
   const boards: Boards = [];
 
   allBoxes(board).forEach((box) => {
@@ -85,9 +89,13 @@ const fillCandidatesOnlyForBox = (board: Board): Boards => {
           (cell) => cell.i < box[i * 3].i || box[i * 3 + 2].i < cell.i
         );
         cellsNotInBox.forEach((cell) => {
+          const before = board.grid[cell.i].candidates.length;
           board.grid[cell.i].candidates = board.grid[cell.i].candidates.filter(
             (v) => !candidatesOnlyForBox.includes(v)
           );
+          if (board.grid[cell.i].candidates.length < before) {
+            board.grid[cell.i].difficulty *= 3;
+          }
         });
 
         boards.push({
@@ -119,9 +127,13 @@ const fillCandidatesOnlyForBox = (board: Board): Boards => {
           (cell) => cell.i < box[i].i || box[i + 6].i < cell.i
         );
         cellsNotInBox.forEach((cell) => {
+          const before = board.grid[cell.i].candidates.length;
           board.grid[cell.i].candidates = board.grid[cell.i].candidates.filter(
             (v) => !candidatesOnlyForBox.includes(v)
           );
+          if (board.grid[cell.i].candidates.length < before) {
+            board.grid[cell.i].difficulty *= 3;
+          }
         });
         boards.push({
           ...clone(board),
@@ -137,7 +149,7 @@ const fillCandidatesOnlyForBox = (board: Board): Boards => {
 };
 
 export const fillCandidates = (board: Board): Boards => {
-  let boards = fillCandidatesInCellsGroup(clone(board), allRows(board));
+  let boards = fillCandidatesInCellsGroup(board, allRows(board));
 
   boards = [
     ...boards,
@@ -155,5 +167,5 @@ export const fillCandidates = (board: Board): Boards => {
     ),
   ];
 
-  return [...boards, ...fillCandidatesOnlyForBox(boards[boards.length - 1])];
+  return boards;
 };

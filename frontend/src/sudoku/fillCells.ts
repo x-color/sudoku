@@ -1,23 +1,32 @@
 import { Board, FillMethods, FillMethod, Cells, Position } from "./types";
 import { ownBox, ownCol, ownRow } from "./utils";
 
+const easiestCell = (cells: Cells) =>
+  cells.sort((a, b) => a.difficulty - b.difficulty)[0];
+
 // 確定法（１マスのみを見てそこに入る可能性のある数字が一つしかない場合に確定する方式）
 const fillOneConfirmedCell = (board: Board) => {
-  for (const cell of board.grid) {
-    if (cell.value || cell.candidates.length > 1) {
-      continue;
-    }
+  const fillables = board.grid
+    .map((cell) => {
+      if (cell.value || cell.candidates.length > 1) {
+        return null;
+      }
+      return {
+        ...cell,
+        value: cell.candidates[0],
+        candidates: [],
+        difficulty: 0,
+      };
+    })
+    .filter((cell) => cell !== null);
 
+  if (fillables.length) {
+    const cell = easiestCell(fillables as Cells);
     board.process = {
       id: FillMethods.FillOne,
       i: cell.i,
     };
-    board.grid[cell.i] = {
-      ...cell,
-      value: cell.candidates[0],
-      candidates: [],
-    };
-    break;
+    board.grid[cell.i] = cell;
   }
 
   return board;
@@ -29,39 +38,44 @@ const fillOnlyOneCellInCellsGroup = (
   ownCells: (board: Board, i: Position) => Cells,
   method: FillMethod
 ) => {
-  for (const cell of board.grid) {
-    if (cell.value) {
-      continue;
-    }
+  const fillables = board.grid
+    .map((cell) => {
+      if (cell.value) {
+        return null;
+      }
 
-    const otherCellCandidates = ownCells(board, cell.i)
-      .filter((c) => c.i !== cell.i)
-      .map((cell) => cell.candidates)
-      .reduce((merge, cur) => [
-        ...merge,
-        ...cur.filter((v) => !merge.includes(v)),
-      ]);
+      const otherCellCandidates = ownCells(board, cell.i)
+        .filter((c) => c.i !== cell.i)
+        .map((cell) => cell.candidates)
+        .reduce((merge, cur) => [
+          ...merge,
+          ...cur.filter((v) => !merge.includes(v)),
+        ]);
 
-    const onlyCandidate = cell.candidates.filter(
-      (v) => !otherCellCandidates.includes(v)
-    );
+      const onlyCandidate = cell.candidates.filter(
+        (v) => !otherCellCandidates.includes(v)
+      );
 
-    if (onlyCandidate.length !== 1) {
-      continue;
-    }
+      if (onlyCandidate.length !== 1) {
+        return null;
+      }
 
+      return {
+        ...cell,
+        value: onlyCandidate[0],
+        candidates: [],
+        difficulty: 0,
+      };
+    })
+    .filter((cell) => cell !== null);
+
+  if (fillables.length) {
+    const cell = easiestCell(fillables as Cells);
     board.process = {
       id: method,
       i: cell.i,
     };
-
-    board.grid[cell.i] = {
-      ...cell,
-      value: onlyCandidate[0],
-      candidates: [],
-    };
-
-    break;
+    board.grid[cell.i] = cell;
   }
 
   return board;
@@ -92,7 +106,7 @@ const fillOnlyOneCellInBox = (board: Board) => {
 };
 
 export const fillOneCell = (board: Board) => {
-  board = fillOneConfirmedCell(board);
+  board = fillOnlyOneCellInBox(board);
   if (board.process) {
     return board;
   }
@@ -107,6 +121,7 @@ export const fillOneCell = (board: Board) => {
     return board;
   }
 
-  board = fillOnlyOneCellInBox(board);
+  board = fillOneConfirmedCell(board);
+
   return board;
 };

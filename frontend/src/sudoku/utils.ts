@@ -3,8 +3,7 @@ import { Board, CellsGroup, Position, Edge } from "./types";
 export const clone = (board: Board): Board => {
   const grid = board.grid.map((v) => {
     return {
-      i: v.i,
-      value: v.value,
+      ...v,
       candidates: [...v.candidates],
     };
   });
