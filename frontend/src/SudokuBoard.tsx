@@ -1,31 +1,45 @@
 import React from "react";
-import { Board, FillCellProcess, SudokuNumber } from "./sudoku/types";
-
+import { SudokuNumber, Position } from "./sudoku/types";
 import { makeStyles } from "@material-ui/core/styles";
 
+const boardSize = (min: number) => {
+  const max =
+    window.parent.screen.height < window.parent.screen.width
+      ? window.parent.screen.height * 0.9
+      : window.parent.screen.width * 0.9;
+  return min < max ? min : max;
+};
+
 const useStyles = makeStyles({
-  row: {
-    height: 50,
-  },
   board: {
-    border: "2px solid #333",
+    border: "3px solid #333",
     borderCollapse: "collapse",
-    borderSpacing: "0",
+    borderSpacing: 0,
+    margin: "auto",
+    textAlign: "center",
+  },
+  smBoard: {
+    height: boardSize(400),
+    width: boardSize(400),
+  },
+  mdBoard: {
+    height: boardSize(600),
+    width: boardSize(600),
   },
   cell: {
-    width: "50px",
     border: "1px solid #333",
-    padding: "0",
-    margin: "0",
   },
   cellInBottomOfBox: {
-    borderBottom: "2px solid #333",
+    borderBottom: "3px solid #333",
   },
   cellInRightOfBox: {
-    borderRight: "2px solid #333",
+    borderRight: "3px solid #333",
   },
-  focusedCell: {
-    backgroundColor: "lightblue",
+  primaryColor: {
+    backgroundColor: "#a6d4fa",
+  },
+  secondaryColor: {
+    backgroundColor: "#ffe69b",
   },
 });
 
@@ -34,23 +48,48 @@ type CellProps = {
   bottomOfBox: boolean;
   rightOfBox: boolean;
   focus: boolean;
+  color?: "primary" | "secondary";
 };
 
 const Cell = (props: CellProps) => {
   const classes = useStyles();
   return (
     <td
-      className={`${classes.cell} ${props.focus ? classes.focusedCell : ""} ${
-        props.bottomOfBox ? classes.cellInBottomOfBox : ""
-      } ${props.rightOfBox ? classes.cellInRightOfBox : ""}`}
+      className={`${classes.cell} ${
+        props.focus && props.color === "primary" ? classes.primaryColor : ""
+      }  ${
+        props.focus && props.color === "secondary" ? classes.secondaryColor : ""
+      } ${props.bottomOfBox ? classes.cellInBottomOfBox : ""} ${
+        props.rightOfBox ? classes.cellInRightOfBox : ""
+      }`}
     >
       {props.value}
     </td>
   );
 };
 
-export const SudokuBoard = (props: Board) => {
+export type SudokuBoardProps = {
+  grid: SudokuNumber[];
+  focus?: {
+    i: Position;
+    color: "primary" | "secondary";
+  }[];
+  sm?: boolean;
+};
+
+export const SudokuBoard = (props: SudokuBoardProps) => {
   const classes = useStyles();
+
+  const color = (i: Position) => {
+    if (!props.focus) {
+      return undefined;
+    }
+    const hit = props.focus.filter((v) => v.i === i);
+    return hit.length ? hit[0].color : undefined;
+  };
+  const focus = (i: Position) =>
+    props.focus ? props.focus.some((v) => i === v.i) : false;
+
   const rows = (cells: SudokuNumber[]) => {
     return cells
       .map((_, i, cells) => {
@@ -62,25 +101,31 @@ export const SudokuBoard = (props: Board) => {
       .filter((v) => v.length > 0)
       .map((v, y) => {
         return (
-          <tr className={classes.row} key={"tr" + y}>
-            {v.map((v, x) => (
-              <Cell
-                value={v}
-                rightOfBox={x % 3 === 2}
-                bottomOfBox={y % 3 === 2}
-                focus={y * 9 + x === (props.process as FillCellProcess).i}
-                key={"cell" + y * 9 + x}
-              />
-            ))}
+          <tr key={"tr" + y}>
+            {v.map((v, x) => {
+              const p = (y * 9 + x) as Position;
+              return (
+                <Cell
+                  value={v}
+                  rightOfBox={x % 3 === 2}
+                  bottomOfBox={y % 3 === 2}
+                  focus={focus(p)}
+                  color={color(p)}
+                  key={"cell" + p}
+                />
+              );
+            })}
           </tr>
         );
       });
   };
 
+  const size = props.sm ? classes.smBoard : classes.mdBoard;
+
   return (
     <div>
-      <table className={classes.board}>
-        <tbody>{rows(props.grid.map((cell) => cell.value))}</tbody>
+      <table className={`${classes.board} ${size}`}>
+        <tbody>{rows(props.grid)}</tbody>
       </table>
     </div>
   );
