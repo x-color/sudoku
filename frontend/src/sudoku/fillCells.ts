@@ -8,7 +8,7 @@ const easiestCell = (cells: Cells) =>
 const fillOneConfirmedCell = (board: Board) => {
   const fillables = board.grid
     .map((cell) => {
-      if (cell.value || cell.candidates.length > 1) {
+      if (cell.value || cell.candidates.length !== 1) {
         return null;
       }
       return {

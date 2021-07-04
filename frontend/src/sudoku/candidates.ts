@@ -1,4 +1,12 @@
-import { Cells, Boards, Candidates, CellsGroup, Board } from "./types";
+import { sample } from "./sudoku";
+import {
+  Cells,
+  Boards,
+  Candidates,
+  CellsGroup,
+  Board,
+  SudokuNumber,
+} from "./types";
 import { allBoxes, clone, allCols, allRows, ownRow, ownCol } from "./utils";
 
 const candidatesInCells = (cells: Cells) => {
@@ -168,4 +176,164 @@ export const fillCandidates = (board: Board): Boards => {
   ];
 
   return boards;
+};
+
+const fillCandidatesByLockInCellsGroup = (
+  board: Board,
+  cellsGroup: CellsGroup
+): Boards => {
+  const boards: Boards = [clone(board)];
+
+  cellsGroup.forEach((cells) => {
+    cells.forEach((cell, i) => {
+      const sameCandidatesCells = cells.filter(
+        (c) =>
+          cell.candidates.length === c.candidates.length &&
+          cell.candidates.every((v) => c.candidates.includes(v))
+      );
+      // 一度処理したLockedCellを再処理しない
+      if (sameCandidatesCells.some((c) => c.i < i)) {
+        return;
+      }
+
+      if (cell.candidates.length !== sameCandidatesCells.length) {
+        return;
+      }
+
+      const others = cells
+        .filter((cell) => sameCandidatesCells.every((c) => cell.i !== c.i))
+        .map((cell) => cell.i);
+
+      const filled = clone(boards[boards.length - 1]);
+      filled.grid = filled.grid.map((cell) => {
+        if (!others.includes(cell.i)) {
+          return cell;
+        }
+        return {
+          ...cell,
+          candidates: cell.candidates.filter(
+            (v) => !sameCandidatesCells[0].candidates.includes(v)
+          ),
+          difficulty: cell.difficulty * 4,
+        };
+      });
+      filled.process = {
+        focus: cells.map((cell) => cell.i),
+      };
+
+      boards.push(filled);
+    });
+  });
+
+  return boards.slice(1);
+};
+
+export const fillCandidatesByLock = (board: Board): Boards => {
+  let boards = [clone(board)];
+  boards = [
+    ...boards,
+    ...fillCandidatesByLockInCellsGroup(
+      clone(boards[boards.length - 1]),
+      allRows(boards[boards.length - 1])
+    ),
+  ];
+  boards = [
+    ...boards,
+    ...fillCandidatesByLockInCellsGroup(
+      clone(boards[boards.length - 1]),
+      allCols(boards[boards.length - 1])
+    ),
+  ];
+  return [
+    ...boards.slice(1),
+    ...fillCandidatesByLockInCellsGroup(
+      clone(boards[boards.length - 1]),
+      allBoxes(board)
+    ),
+  ];
+};
+
+const fillCandidatesByLock2InCellsGroup = (
+  board: Board,
+  cellsGroup: CellsGroup
+): Boards => {
+  const boards = [clone(board)];
+  cellsGroup.forEach((cells) => {
+    const lockedCandidates: Candidates = [];
+
+    const candidatesMap = [...Array(9)].map((_, i) => {
+      const v = (i + 1).toString() as SudokuNumber;
+      return cells.filter((cell) => cell.candidates.includes(v));
+    });
+    candidatesMap.forEach((cells, i) => {
+      const otherCandidates = candidatesMap.filter(
+        (c) =>
+          cells.length === c.length &&
+          cells.every((cell, j) => cell.i === c[j].i)
+      ).length;
+      if (cells.length !== otherCandidates) {
+        return;
+      }
+
+      lockedCandidates.push((i + 1).toString() as SudokuNumber);
+    });
+
+    if (lockedCandidates.length === 0) {
+      return;
+    }
+
+    const targets = cells.filter(
+      (cell) =>
+        cell.candidates.length > lockedCandidates.length &&
+        lockedCandidates.every((v) => cell.candidates.includes(v))
+    );
+
+    if (targets.length === 0) {
+      return;
+    }
+
+    const filled = clone(boards[boards.length - 1]);
+    filled.grid = filled.grid.map((cell) => {
+      if (!targets.find((c) => c.i === cell.i)) {
+        return cell;
+      }
+      return {
+        ...cell,
+        candidates: cell.candidates.filter((v) => lockedCandidates.includes(v)),
+        difficulty: cell.difficulty * 4,
+      };
+    });
+    filled.process = {
+      focus: cells.map((cell) => cell.i),
+    };
+
+    boards.push(filled);
+  });
+
+  return boards.slice(1);
+};
+
+export const fillCandidatesByLock2 = (board: Board): Boards => {
+  let boards = [clone(board)];
+  boards = [
+    ...boards,
+    ...fillCandidatesByLock2InCellsGroup(
+      clone(boards[boards.length - 1]),
+      allRows(boards[boards.length - 1])
+    ),
+  ];
+  boards = [
+    ...boards,
+    ...fillCandidatesByLock2InCellsGroup(
+      clone(boards[boards.length - 1]),
+      allCols(boards[boards.length - 1])
+    ),
+  ];
+  return [
+    ...boards.slice(1),
+    ...fillCandidatesByLock2InCellsGroup(
+      clone(boards[boards.length - 1]),
+      allBoxes(board)
+    ),
+  ];
 };

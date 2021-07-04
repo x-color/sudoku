@@ -23,6 +23,7 @@ export const FillMethods = {
   FillOnlyOneInRow: "FillOnlyOneInRow",
   FillOnlyOneInCol: "FillOnlyOneInCol",
   FillOnlyOneInBox: "FillOnlyOneInBox",
+  FillTemporary: "FillTemporary",
 } as const;
 export type FillMethod = typeof FillMethods[keyof typeof FillMethods];
 
