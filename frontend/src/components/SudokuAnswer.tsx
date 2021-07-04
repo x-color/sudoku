@@ -81,8 +81,10 @@ export const SudokuAnswer = (props: SudokuAnswerProps) => {
   }, []);
 
   const handleLast = React.useCallback(() => {
-    setActiveStep(() => props.history.length - 1);
-  }, [props.history.length]);
+    setActiveStep(
+      () => props.history.slice(0, SBCSteps[SBCStepIndex]).length - 1
+    );
+  }, [props.history, SBCStepIndex, SBCSteps]);
 
   const handlerSBC = React.useCallback(() => {
     setSBCStepIndex((pre) => pre + 1);
