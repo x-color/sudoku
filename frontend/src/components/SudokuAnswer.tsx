@@ -68,6 +68,8 @@ export const SudokuAnswer = (props: SudokuAnswerProps) => {
     )
     .filter((v) => v !== -1);
 
+  const history = props.history.slice(0, SBCSteps[SBCStepIndex]);
+
   const handleFirst = React.useCallback(() => {
     setActiveStep(() => 0);
   }, []);
@@ -81,10 +83,8 @@ export const SudokuAnswer = (props: SudokuAnswerProps) => {
   }, []);
 
   const handleLast = React.useCallback(() => {
-    setActiveStep(
-      () => props.history.slice(0, SBCSteps[SBCStepIndex]).length - 1
-    );
-  }, [props.history, SBCStepIndex, SBCSteps]);
+    setActiveStep(() => history.length - 1);
+  }, [history]);
 
   const handlerSBC = React.useCallback(() => {
     setSBCStepIndex((pre) => pre + 1);
@@ -108,10 +108,7 @@ export const SudokuAnswer = (props: SudokuAnswerProps) => {
       });
     }
 
-    if (
-      displayHintMode &&
-      activeStep + 1 < props.history.slice(0, SBCSteps[SBCStepIndex]).length
-    ) {
+    if (displayHintMode && activeStep + 1 < history.length) {
       focusCells.push({
         i: (props.history[activeStep + 1].process as FillCellProcess).i,
         color: "secondary",
@@ -125,15 +122,13 @@ export const SudokuAnswer = (props: SudokuAnswerProps) => {
     <Container className={classes.root}>
       <ThemeProvider theme={theme}>
         <SudokuBoard
-          grid={props.history
-            .slice(0, SBCSteps[SBCStepIndex])
-            [activeStep].grid.map((cell) => cell.value)}
+          grid={history[activeStep].grid.map((cell) => cell.value)}
           initGrid={props.history[0].grid.map((cell) => cell.value)}
           focus={focusCells()}
         />
       </ThemeProvider>
       <ProgressMobileStepper
-        steps={props.history.slice(0, SBCSteps[SBCStepIndex]).length}
+        steps={history.length}
         activeStep={activeStep}
         clickFirst={handleFirst}
         clickBack={handleBack}
