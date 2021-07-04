@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, makeStyles } from "@material-ui/core";
 import { Board, Cell, Position } from "../sudoku/types";
-import { difficult3 } from "../sudoku/sudoku";
+import { difficult } from "../sudoku/sudoku";
 import { CtrlButtons } from "./CtrlButtons";
 
 const useStyles = makeStyles({
@@ -32,7 +32,7 @@ export const SudokuUploader = (props: SudokuUploaderProps) => {
   };
 
   const handlerUpload = React.useCallback(() => {
-    props.setInitBoard(difficult3);
+    props.setInitBoard(difficult);
   }, [props]);
 
   return (
