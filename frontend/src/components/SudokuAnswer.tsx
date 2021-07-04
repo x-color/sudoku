@@ -1,21 +1,21 @@
 import React from "react";
 import {
   Container,
+  createMuiTheme,
   FormControlLabel,
   Grid,
   IconButton,
   makeStyles,
+  MobileStepper,
   Switch,
+  ThemeProvider,
 } from "@material-ui/core";
-import MobileStepper from "@material-ui/core/MobileStepper";
-import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
-import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import FirstPageIcon from "@material-ui/icons/FirstPage";
-import { Boards, FillCellProcess, FillMethods } from "../sudoku/types";
 import { FocusCell, SudokuBoard } from "./SudokuBoard";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { CtrlButtons } from "./CtrlButtons";
+import { Boards, FillCellProcess, FillMethods } from "../sudoku/types";
 
 const theme = createMuiTheme({
   palette: {

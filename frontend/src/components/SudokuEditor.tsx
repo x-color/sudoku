@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Container, Grid, makeStyles } from "@material-ui/core";
+import { Container, makeStyles } from "@material-ui/core";
 import { Cells, Position, SudokuNumber } from "../sudoku/types";
 import { SudokuBoard } from "./SudokuBoard";
 import { CtrlButtons } from "./CtrlButtons";

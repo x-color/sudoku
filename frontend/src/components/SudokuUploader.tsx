@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, makeStyles } from "@material-ui/core";
 import { Board, Cell, Position } from "../sudoku/types";
-import { difficult, difficult2, difficult3, sample } from "../sudoku/sudoku";
+import { difficult3 } from "../sudoku/sudoku";
 import { CtrlButtons } from "./CtrlButtons";
 
 const useStyles = makeStyles({
