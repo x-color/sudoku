@@ -12,7 +12,7 @@ import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft";
 import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight";
 import LastPageIcon from "@material-ui/icons/LastPage";
 import FirstPageIcon from "@material-ui/icons/FirstPage";
-import { Boards, FillCellProcess, FillMethods } from "./sudoku/types";
+import { Boards, FillCellProcess, FillMethods } from "../sudoku/types";
 import { FocusCell, SudokuBoard } from "./SudokuBoard";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { CtrlButtons } from "./CtrlButtons";

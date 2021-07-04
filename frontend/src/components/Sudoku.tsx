@@ -1,12 +1,12 @@
 import React from "react";
-import { solve, sample3 } from "./sudoku/sudoku";
-import { Board, Position, Sudoku, SudokuNumber } from "./sudoku/types";
+import { solve, sample3 } from "../sudoku/sudoku";
+import { Board, Position, Sudoku, SudokuNumber } from "../sudoku/types";
 import { Container, makeStyles } from "@material-ui/core";
 import { HorizontalStepper } from "./Stepper";
 import { SudokuEditor } from "./SudokuEditor";
 import { SudokuAnswer } from "./SudokuAnswer";
 import { SudokuUploader } from "./SudokuUploader";
-import { clone } from "./sudoku/utils";
+import { clone } from "../sudoku/utils";
 
 const useStyles = makeStyles({
   root: {

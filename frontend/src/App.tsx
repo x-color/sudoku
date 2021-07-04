@@ -1,7 +1,7 @@
 import React from "react";
 import "./App.css";
-import { SudokuBox } from "./Sudoku";
-import { Header } from "./Header";
+import { SudokuBox } from "./components/Sudoku";
+import { Header } from "./components/Header";
 
 function App() {
   return (
