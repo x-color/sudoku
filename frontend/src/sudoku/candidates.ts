@@ -1,4 +1,3 @@
-import { sample } from "./sudoku";
 import {
   Cells,
   Boards,

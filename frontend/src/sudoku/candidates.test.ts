@@ -5,7 +5,6 @@ import {
   fillCandidatesOnlyForBox,
 } from "./candidates";
 import { equal, generateFilledSudokuBoard, newCell } from "./testutils";
-import { Cell } from "./types";
 
 test("Narrow down candidates by basic process", () => {
   const board = generateFilledSudokuBoard([newCell(0, "1")]);
