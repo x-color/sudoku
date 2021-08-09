@@ -18,4 +18,8 @@ RUN apt update \
 
 RUN wget -P /usr/share/tesseract-ocr/4.00/tessdata https://github.com/USCDataScience/counterfeit-electronics-tesseract/raw/master/Training%20Tesseract/snum.traineddata
 
-ENTRYPOINT [ "/bin/bash" ]
+COPY go.mod go.sum main.go ocr.go processing.go sudoku.go /src/
+WORKDIR /src
+RUN go build -o /app .
+
+ENTRYPOINT [ "/app" ]
