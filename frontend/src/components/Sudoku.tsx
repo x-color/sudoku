@@ -22,20 +22,23 @@ export const SudokuBox = () => {
   });
   const [step, setStep] = React.useState(0);
 
-  const handlerEditBoard = (i: number) => (j: Position, v: SudokuNumber) => {
-    const editedBoard = {
-      ...sudoku.history[i],
-      grid: sudoku.history[i].grid.map((cell) =>
-        cell.i === j ? { ...cell, value: v } : cell
-      ),
-    };
+  const handlerEditBoard = React.useCallback(
+    (i: number) => (j: Position, v: SudokuNumber) => {
+      const editedBoard = {
+        ...sudoku.history[i],
+        grid: sudoku.history[i].grid.map((cell) =>
+          cell.i === j ? { ...cell, value: v } : cell
+        ),
+      };
 
-    setSudoku({
-      history: sudoku.history.map((board, n) =>
-        n === i ? editedBoard : board
-      ),
-    });
-  };
+      setSudoku({
+        history: sudoku.history.map((board, n) =>
+          n === i ? editedBoard : board
+        ),
+      });
+    },
+    [sudoku.history]
+  );
 
   const solveSudoku = React.useCallback(() => {
     const history = solve(clone(sudoku.history[0]));
