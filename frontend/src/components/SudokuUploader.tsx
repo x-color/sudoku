@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   center: {
     textAlign: "center",
   },
+  text: {
+    marginBottom: "20px",
+  },
   input: {
     display: "none",
   },
@@ -120,11 +123,11 @@ export const SudokuUploader = (props: SudokuUploaderProps) => {
 
   return (
     <Container className={classes.root}>
-      <p>
+      <Container className={classes.text}>
         <h2>サイトについて</h2>
-        自動で数独を解くことができるサイトです。
+        自動で数独を解くことができるサイトです。ヒント表示なども可能です。
         <ul>
-          <li>難しい数独などの解答が知りたい！</li>
+          <li>難しい数独の解答が知りたい！</li>
           <li>次にどのマスが埋まるかが知りたい！</li>
         </ul>
         といったときにご利用ください。
@@ -140,7 +143,7 @@ export const SudokuUploader = (props: SudokuUploaderProps) => {
         </ul>
         <b>※注意点</b>:
         [UPLOAD]モードは少々時間がかかります。また、画像によってはうまく認識できないこともありますので、アップロード後に数字があっているか確認してください。
-      </p>
+      </Container>
       <Backdrop className={classes.backdrop} open={uploading}>
         <CircularProgress color="inherit" />
       </Backdrop>
