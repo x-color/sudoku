@@ -1,0 +1,14 @@
+openapi: "3.0.1"
+info:
+  title: sudoku api
+x-amazon-apigateway-binary-media-types: ["image/jpeg", "image/png"]
+paths:
+  /api/ocr:
+    post:
+      x-amazon-apigateway-integration:
+        payloadFormatVersion: "2.0"
+        type: aws_proxy
+        httpMethod: POST
+        uri: arn:aws:apigateway:${Region}:lambda:path/2015-03-31/functions/${LambdaArn}/invocations
+        connectionType: INTERNET
+        timeoutInMillis: 30000
