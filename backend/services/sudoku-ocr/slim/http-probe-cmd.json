@@ -1,0 +1,13 @@
+{
+    "commands": [
+        {
+            "protocol": "http",
+            "method": "POST",
+            "resource": "/2015-03-31/functions/function/invocations",
+            "body_file": "body.json",
+            "headers": [
+                "Content-Type: application/json"
+            ]
+        }
+    ]
+}
