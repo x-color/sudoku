@@ -1,0 +1,50 @@
+name: deploy
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: "14.15.3"
+      - run: npm ci
+        working-directory: ./frontend
+      - run: npm test
+        working-directory: ./frontend
+      - run: npm build
+        working-directory: ./frontend
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./frontend/public
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github-notify
+          SLACK_COLOR: green
+          SLACK_MESSAGE: sudoku web application is deployed!!
+          SLACK_TITLE: Deployed
+          SLACK_USERNAME: GitHub Actions(x-color/sudoku)
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+      - name: Slack Notification
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: github-notify
+          SLACK_COLOR: red
+          SLACK_MESSAGE: Failed to deploy sudoku web application!! you should check it!!
+          SLACK_TITLE: Failed to Deploy
+          SLACK_USERNAME: GitHub Actions(x-color/sudoku)
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
