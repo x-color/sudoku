@@ -171,6 +171,3 @@ export const SudokuUploader = (props: SudokuUploaderProps) => {
     </Container>
   );
 };
-
-// https://3.bp.blogspot.com/-aLzsUH4ENgc/WUdZGc_TJ_I/AAAAAAABFCg/9lApl5U5gSA2TA48xvnfXlc6dwrTvsh2wCLcBGAs/s800/smartphone_photo_satsuei_man.png
-// https://2.bp.blogspot.com/-KNXWZSn8qlA/WMfBy-yWbCI/AAAAAAABCiI/5F9NWxzgYsI_JW725iMYyWn_jYcatAx3wCLcB/s800/book_nanpure.png
