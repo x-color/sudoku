@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import { Board, Cell, Position, SudokuNumber } from "../sudoku/types";
 import axios, { AxiosError } from "axios";
+import axiosRetry from "axios-retry";
 import Resizer from "react-image-file-resizer";
 
 const useStyles = makeStyles((theme) => ({
@@ -84,7 +85,12 @@ export const SudokuUploader = (props: SudokuUploaderProps) => {
 
       setUploading(true);
       const base64Image = await resizeImage(e.target.files[0]);
-      console.log(base64Image.length);
+      axiosRetry(axios, {
+        retryDelay: axiosRetry.exponentialDelay,
+        retryCondition: (error) =>
+          axiosRetry.isNetworkOrIdempotentRequestError(error) ||
+          error.response?.status === 429,
+      });
       const res = await axios
         .post<{ cells: SudokuNumber[] }>(
           process.env.REACT_APP_API_ENDPOINT,
