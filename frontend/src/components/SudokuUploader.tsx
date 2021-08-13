@@ -35,8 +35,8 @@ const resizeImage = (image: File): Promise<string> =>
   new Promise((resolve) => {
     Resizer.imageFileResizer(
       image,
-      1000,
-      1000,
+      2000,
+      2000,
       "JPEG",
       100,
       0,
