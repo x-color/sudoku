@@ -26,6 +26,20 @@
     -->
     <title>数独解答プログラム</title>
   </head>
+  <!-- https://developers.google.com/analytics/devguides/collection/gtagjs?hl=ja#install_the_global_site_tag -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GA_MEASUREMENT_ID%"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      window.dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "%REACT_APP_GA_MEASUREMENT_ID%");
+  </script>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
