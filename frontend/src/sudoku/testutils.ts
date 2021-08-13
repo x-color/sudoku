@@ -64,7 +64,7 @@ export const newCell = (
   };
 };
 
-export const equal = (a: Cell, b: Cell) => {
+export const equal = (a: Cell, b: Cell): boolean => {
   const r =
     a.i === b.i &&
     a.value === b.value &&

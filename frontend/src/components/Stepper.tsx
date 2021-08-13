@@ -16,7 +16,7 @@ const getSteps = () => {
   return ["Upload Image", "Edit Sudoku", "Answer"];
 };
 
-export const HorizontalStepper = (props: { step: number }) => {
+export const HorizontalStepper = (props: { step: number }): JSX.Element => {
   const classes = useStyles();
   const steps = getSteps();
 

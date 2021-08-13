@@ -122,7 +122,7 @@ export type SudokuBoardProps = {
   editBoard?: (i: Position) => (v: SudokuNumber) => void;
 };
 
-export const SudokuBoard = (props: SudokuBoardProps) => {
+export const SudokuBoard = (props: SudokuBoardProps): JSX.Element => {
   const classes = useStyles();
 
   const color = (i: Position) => {

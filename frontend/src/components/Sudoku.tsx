@@ -15,7 +15,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const SudokuBox = () => {
+export const SudokuBox = (): JSX.Element => {
   const classes = useStyles();
   const [sudoku, setSudoku] = React.useState<Sudoku>({
     history: [],

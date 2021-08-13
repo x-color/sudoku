@@ -105,7 +105,7 @@ const fillOnlyOneCellInBox = (board: Board) => {
   );
 };
 
-export const fillOneCell = (board: Board) => {
+export const fillOneCell = (board: Board): Board => {
   board = fillOnlyOneCellInBox(board);
   if (board.process) {
     return board;

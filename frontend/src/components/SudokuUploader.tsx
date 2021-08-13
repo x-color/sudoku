@@ -53,7 +53,7 @@ type SudokuUploaderProps = {
   setInitBoard: (board: Board) => void;
 };
 
-export const SudokuUploader = (props: SudokuUploaderProps) => {
+export const SudokuUploader = (props: SudokuUploaderProps): JSX.Element => {
   const classes = useStyles();
   const [uploading, setUploading] = React.useState<boolean>(false);
 

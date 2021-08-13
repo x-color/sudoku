@@ -22,7 +22,7 @@ type EditSudokuProps = {
   onClickSolveButton: () => void;
 };
 
-export const SudokuEditor = (props: EditSudokuProps) => {
+export const SudokuEditor = (props: EditSudokuProps): JSX.Element => {
   const classes = useStyles();
   const handlerEdit = React.useCallback(
     (i: Position) => (v: SudokuNumber) => props.editBoard(i, v),

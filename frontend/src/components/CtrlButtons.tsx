@@ -16,7 +16,7 @@ type CtrlButtonsProps = {
   disableRight?: boolean;
 };
 
-export const CtrlButtons = (props: CtrlButtonsProps) => {
+export const CtrlButtons = (props: CtrlButtonsProps): JSX.Element => {
   const classes = useStyles();
   return (
     <Grid container spacing={3} className={classes.center}>

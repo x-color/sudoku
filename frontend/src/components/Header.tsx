@@ -1,7 +1,7 @@
 import React from "react";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 
-export const Header = () => {
+export const Header = (): JSX.Element => {
   return (
     <AppBar position="static">
       <Toolbar>

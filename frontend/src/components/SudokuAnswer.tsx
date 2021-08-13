@@ -52,7 +52,7 @@ export type SudokuAnswerProps = {
   onClickBackButton: () => void;
 };
 
-export const SudokuAnswer = (props: SudokuAnswerProps) => {
+export const SudokuAnswer = (props: SudokuAnswerProps): JSX.Element => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const [displayHintMode, setDisplayHintMode] = React.useState(false);

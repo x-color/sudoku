@@ -1,4 +1,4 @@
-import { Board, CellsGroup, Position, Edge } from "./types";
+import { Board, CellsGroup, Position, Edge, Cells } from "./types";
 
 export const clone = (board: Board): Board => {
   const grid = board.grid.map((v) => {
@@ -38,23 +38,23 @@ export const allBoxes = (board: Board): CellsGroup => {
   return boxes;
 };
 
-export const ownRow = (board: Board, i: Position) => {
+export const ownRow = (board: Board, i: Position): Cells => {
   const rows = allRows(board);
   return rows[getY(i)];
 };
 
-export const ownCol = (board: Board, i: Position) => {
+export const ownCol = (board: Board, i: Position): Cells => {
   const cols = allCols(board);
   return cols[getX(i)];
 };
 
-export const ownBox = (board: Board, i: Position) => {
+export const ownBox = (board: Board, i: Position): Cells => {
   const boxes = allBoxes(board);
   return boxes[getBoxId(i)];
 };
 
-export const getX = (i: Position) => i % Edge;
-export const getY = (i: Position) => Math.floor(i / Edge);
+export const getX = (i: Position): number => i % Edge;
+export const getY = (i: Position): number => Math.floor(i / Edge);
 
 // BoxId is a position of box
 // ----------
@@ -65,5 +65,5 @@ export const getY = (i: Position) => Math.floor(i / Edge);
 // e.g.)
 // i = 0,1,2,9,10,11,18,19,20 => idx = 0
 // i = 30,31,32,39,40,41,48,49,50 => idx = 4
-export const getBoxId = (i: Position) =>
+export const getBoxId = (i: Position): number =>
   Math.floor(getX(i) / 3) + Math.floor(getY(i) / 3) * 3;
