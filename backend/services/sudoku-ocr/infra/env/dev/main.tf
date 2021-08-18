@@ -16,6 +16,7 @@ module "apiserver" {
   service               = var.service
   throttling_rate_limit = 1
   image_uri             = "${module.repository.repositories_url["sudoku-ocr"]}:${var.image_tag}"
+  allow_origins         = ["http://loalhost:3000"]
 }
 
 module "repository" {

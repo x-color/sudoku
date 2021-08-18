@@ -23,3 +23,7 @@ variable "image_uri" {
   type        = string
   description = ""
 }
+
+variable "allow_origins" {
+  type = list(string)
+}

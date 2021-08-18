@@ -62,7 +62,7 @@ resource "aws_apigatewayv2_api" "this" {
   cors_configuration {
     allow_headers = ["content-type"]
     allow_methods = ["POST"]
-    allow_origins = ["*"]
+    allow_origins = var.allow_origins
   }
 }
 
