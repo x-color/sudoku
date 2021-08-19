@@ -9,6 +9,7 @@ import (
 	"image/jpeg"
 	"image/png"
 	"math"
+	"sort"
 
 	"gocv.io/x/gocv"
 )
@@ -41,12 +42,30 @@ func findCorners(binaryImg gocv.Mat) (gocv.PointVector, error) {
 	return gocv.NewPointVector(), errors.New("corners are not found")
 }
 
+func abs(x int) int {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
 func orderCorners(corners gocv.PointVector) gocv.PointVector {
+	points := corners.ToPoints()
+	sort.Slice(points, func(i, j int) bool {
+		dx := abs(points[i].X - points[j].X)
+		dy := abs(points[i].Y - points[j].Y)
+
+		if float64(dy)/float64(dx) > 0.8 {
+			return points[i].Y < points[j].Y
+		}
+		return points[i].X < points[j].X
+	})
+
 	return gocv.NewPointVectorFromPoints([]image.Point{
-		corners.At(0),
-		corners.At(3),
-		corners.At(1),
-		corners.At(2),
+		points[0],
+		points[1],
+		points[2],
+		points[3],
 	})
 }
 
