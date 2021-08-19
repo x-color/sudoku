@@ -1,1 +1,1 @@
-image_tag = "0.0.1"
+image_tag = "0.0.2"
