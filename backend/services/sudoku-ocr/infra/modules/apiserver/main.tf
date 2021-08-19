@@ -70,7 +70,7 @@ resource "aws_apigatewayv2_deployment" "this" {
   api_id = aws_apigatewayv2_api.this.id
 
   triggers = {
-    redeployment = sha1(jsonencode(data.template_file.openapi))
+    redeployment = sha1("${jsonencode(data.template_file.openapi)}-${join(",", var.allow_origins)}")
   }
 
   lifecycle {
