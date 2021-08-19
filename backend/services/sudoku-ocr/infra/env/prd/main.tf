@@ -17,7 +17,7 @@ module "apiserver" {
 
   env                   = var.env
   service               = var.service
-  throttling_rate_limit = 3
+  throttling_rate_limit = 2
   image_uri             = "${data.aws_caller_identity.self.account_id}.dkr.ecr.${data.aws_region.current.name}.amazonaws.com/${var.image_name_and_tag}"
   allow_origins         = ["https://x-color.github.io"]
 }
