@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/otiai10/gosseract"
+	"github.com/otiai10/gosseract/v2"
 )
 
 func newGosseractClient() (*gosseract.Client, error) {
